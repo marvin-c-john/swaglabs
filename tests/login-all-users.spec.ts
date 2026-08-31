@@ -1,28 +1,25 @@
 import { test, expect } from "@playwright/test";
+import { LoginPage } from "../pages/LoginPage";
 
-const usernames: string[] = [];
-usernames.push(
+
+
+const usernames = [
   "standard_user",
   "locked_out_user",
   "problem_user",
   "performance_glitch_user",
   "error_user",
   "visual_user",
-);
+];
 
 test("login all users", async ({ page }) => {
-  await page.goto("https://www.saucedemo.com/");
+  const loginPage = new LoginPage(page);
 
   for (let user of usernames) {
     if (user !== "locked_out_user") {
-      await page.getByPlaceholder("Username").fill(user);
-
-      await page.getByPlaceholder("Password").fill("secret_sauce");
-
-      await page.locator("#login-button").click();
-
-      await page.locator("#react-burger-menu-btn").click();
-      await page.locator("#logout_sidebar_link").click();
+      await loginPage.login(user);
+      await expect(page).toHaveURL("https://www.saucedemo.com/inventory.html");
+      
     } else {
       continue;
     }
