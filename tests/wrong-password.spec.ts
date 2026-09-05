@@ -1,17 +1,11 @@
 import { test, expect } from "@playwright/test";
+import { LoginPage } from "../pages/LoginPage";
 
 test("login wrong password", async ({ page }) => {
-  await page.goto("https://www.saucedemo.com/");
+  
+  const loginPage = new LoginPage(page)
 
-  // Username
-  await page.getByPlaceholder("Username").fill("standard_user");
+  await loginPage.loginPassword('standard_user', '12345678')
 
-  //Passwort
-  await page.getByPlaceholder("Password").fill("12345678");
-
-  //login
-  await page.locator("#login-button").click();
-
-  // expect error message
   await expect(page.locator('[data-test="error"]')).toBeVisible();
 });

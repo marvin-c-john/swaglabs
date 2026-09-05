@@ -33,4 +33,11 @@ export class LoginPage {
       }
     }
   }
+
+  async loginPassword(username: string, password: string){
+    await this.goto();
+    await this.username.fill(username);
+    await this.password.fill(password);
+    await this.loginButton.click();
+  }
 }
