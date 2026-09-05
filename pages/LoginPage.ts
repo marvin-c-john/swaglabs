@@ -8,21 +8,29 @@ export class LoginPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.username = page.getByRole('textbox', { name: 'Username'});
-    this.password =  page.getByRole('textbox', { name: 'Password'})
-    this.loginButton = page.getByRole('button', { name: 'Login'});
+    this.username = page.getByRole("textbox", { name: "Username" });
+    this.password = page.getByRole("textbox", { name: "Password" });
+    this.loginButton = page.getByRole("button", { name: "Login" });
   }
 
   async goto() {
     await this.page.goto("https://www.saucedemo.com/");
   }
 
-  async login(username: string){
+  async login(username: string) {
     await this.goto();
-    await this.username.fill(username)
-    await this.password.fill('secret_sauce')
+    await this.username.fill(username);
+    await this.password.fill("secret_sauce");
     await this.loginButton.click();
   }
 
- 
+  async loginAllUsers(usernames: string[]) {
+    for (let user of usernames) {
+      if (user !== "locked_out_user") {
+        await this.login(user);
+      } else {
+        continue;
+      }
+    }
+  }
 }
